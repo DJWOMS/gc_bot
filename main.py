@@ -20,12 +20,12 @@ def handle_message(message: Message):
         if user_id == 169603089:
             try:
                 result = commands_dict.sudo_commands[command]
-                if result and result == '!wall':
+                if result and result.__name__.split('_')[0] == 'wall':
                     bot.reply_to(message.reply_to_message, text=result(), parse_mode='markdown',
                                  disable_web_page_preview=True)
-                elif result:
-                    pass
-            except (AttributeError, KeyError):
+                elif result and result.__name__.split('_')[0] == message.text[1:]:
+                    bot.reply_to(message.reply_to_message, text=result('sudo'), parse_mode='markdown')
+            except (AttributeError, KeyError, TypeError):
                 pass
 
 
