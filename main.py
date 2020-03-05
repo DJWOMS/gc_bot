@@ -4,12 +4,11 @@ from telebot.types import Message
 from credentials import BOT_TOKEN
 from commands import commands_dict
 
-
 bot = telebot.TeleBot(BOT_TOKEN)
 print(bot.get_me())
 
 
-@bot.message_handler(func=lambda mess: '!web' == mess.text, content_types=['text'])
+@bot.message_handler(regexp='^![a-z]$+')
 def handle_message(message: Message):
     user_id, command = message.from_user.id, message.text.lower()
     bot.delete_message(message.chat.id, message.message_id)
