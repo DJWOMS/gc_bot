@@ -1,2 +1,5 @@
-def unban_user(user):
-    return f'{user} unbanned'
+from db.models import User
+
+
+def unban_user(user: User):
+    return user
