@@ -1,0 +1,5 @@
+.idea/
+venv/
+credentials.py
+__pycahe__/
+*.pyc
