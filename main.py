@@ -11,13 +11,21 @@ print(bot.get_me())
 @bot.message_handler(regexp='^![a-z]')
 def handle_message(message: Message):
     user_id, command = message.from_user.id, message.text.lower()
+    print(user_id)
     bot.delete_message(message.chat.id, message.message_id)
     try:
         result = commands_dict.light_commands[command]
         if result:
             bot.reply_to(message.reply_to_message, text=result(), parse_mode='markdown', disable_web_page_preview=True)
     except (AttributeError, KeyError):
-        pass
+        if user_id == '12345':
+            try:
+                result = commands_dict.sudo_commands[command]
+                if result:
+                    bot.reply_to(message.reply_to_message, text=result(), parse_mode='markdown',
+                                 disable_web_page_preview=True)
+            except (AttributeError, KeyError):
+                pass
 
 
 bot.polling()
