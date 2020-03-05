@@ -24,7 +24,8 @@ def handle_message(message: Message):
                     bot.reply_to(message.reply_to_message, text=result(), parse_mode='markdown',
                                  disable_web_page_preview=True)
                 elif result and result.__name__.split('_')[0] == message.text[1:]:
-                    bot.reply_to(message.reply_to_message, text=result('sudo'), parse_mode='markdown')
+                    user = message.reply_to_message.from_user.id
+                    bot.reply_to(message.reply_to_message, text=result(user), parse_mode='markdown')
             except (AttributeError, KeyError, TypeError):
                 pass
 
