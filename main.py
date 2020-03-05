@@ -1,4 +1,5 @@
 import telebot
+from telebot.types import Message
 
 from credentials import BOT_TOKEN
 from commands import commands_dict
@@ -9,9 +10,9 @@ print(bot.get_me())
 
 
 @bot.message_handler(func=lambda mess: '!web' == mess.text, content_types=['text'])
-def handle_message(message):
+def handle_message(message: Message):
     user_id, command = message.from_user.id, message.text.lower()
-    bot.delete_message(message.chat_id, message.message_id)
+    bot.delete_message(message.chat.id, message.message_id)
     result = commands_dict.light_commands[command]
     if result:
         try:
