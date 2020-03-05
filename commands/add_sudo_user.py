@@ -1,2 +1,5 @@
-def add_sudo_user(user):
-    return f'{user} is sudo now'
+from db.models import User
+
+
+def add_sudo_user(user: User):
+    return
