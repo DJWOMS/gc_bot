@@ -8,7 +8,7 @@ bot = telebot.TeleBot(BOT_TOKEN)
 print(bot.get_me())
 
 
-@bot.message_handler(regexp='^![a-z]$')
+@bot.message_handler(regexp='^![a-z]')
 def handle_message(message: Message):
     user_id, command = message.from_user.id, message.text.lower()
     bot.delete_message(message.chat.id, message.message_id)
