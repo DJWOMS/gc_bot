@@ -32,7 +32,7 @@ def init_db(conn: sqlite3.Connection, force: bool = False):
 
 
 @ensure_connection
-def add_user(conn: sqlite3.Connection, user: User):
+def ban_user_db(conn: sqlite3.Connection, user: User):
     c = conn.cursor()
     c.execute(
         '''INSERT INTO dc_users (
