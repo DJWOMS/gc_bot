@@ -13,4 +13,4 @@ class User:
         return self.is_sudo
 
     def __repr__(self):
-        return f'{self.username} {self.first_name} {self.last_name} {self.is_sudo} {self.is_banned} {self.warn}'
+        return f'{self.user_id} {self.username} {self.first_name} {self.last_name} {self.is_sudo} {self.is_banned} {self.warn}'

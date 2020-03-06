@@ -1,43 +1,61 @@
 import telebot
 from telebot import apihelper
 from telebot.types import Message
+import logging
 
 from credentials import BOT_TOKEN, PROXY
 from commands import commands_dict
 from utils import build_user
 from db.sqlite_utils import (
-    init_db, add_user,
-    count_sudo_users, count_banned_users,
-    count_warn_users, update_user
+    init_db,
 )
+from config import MEDIA_ROOT
 
+logger = telebot.logger
+telebot.logger.setLevel(logging.INFO)
 
 bot = telebot.TeleBot(BOT_TOKEN)
-apihelper.proxy = {'https': PROXY}
 init_db()
 print(bot.get_me())
 
 
+def ban_process(message: Message, result):
+    user = build_user(message.reply_to_message)
+    bot.send_photo(
+        message.reply_to_message,
+        photo=open(f'{MEDIA_ROOT}\\Banned.jpg', 'rb'),
+        caption=result(
+            message.from_user.username,
+            user,
+            message
+        ), parse_mode='markdown')
+
+
 @bot.message_handler(regexp='^![a-z]')
 def handle_message(message: Message):
-    user_id, command = message.from_user.id, message.text.lower()
+    user_id, command = message.from_user.id, message.text.split(' ')[0].lower()
     bot.delete_message(message.chat.id, message.message_id)
-    try:
-        result = commands_dict.light_commands[command]
-        if result:
-            bot.reply_to(message.reply_to_message, text=result(), parse_mode='markdown', disable_web_page_preview=True)
-    except (AttributeError, KeyError):
-        if user_id == 169603089:
-            try:
-                result = commands_dict.sudo_commands[command]
-                if result and result.__name__.split('_')[0] == 'wall':
-                    bot.reply_to(message.reply_to_message, text=result(), parse_mode='markdown',
-                                 disable_web_page_preview=True)
-                elif result and result.__name__.split('_')[0] == message.text[1:]:
-                    user = build_user(message.reply_to_message)
-                    bot.reply_to(message.reply_to_message, text=result(user), parse_mode='markdown')
-            except (AttributeError, KeyError, TypeError):
-                pass
+    if message.reply_to_message and not message.reply_to_message.from_user.is_bot:
+        try:
+            result = commands_dict.light_commands[command]
+            if result:
+                bot.reply_to(message.reply_to_message, text=result(), parse_mode='markdown',
+                             disable_web_page_preview=True)
+        except (AttributeError, KeyError):
+            if user_id == 169603089:
+                try:
+                    result = commands_dict.sudo_commands[command]
+                    if result and result.__name__.split('_')[0] == 'ban':
+                        # ban_process(message, result)
+                        bot.kick_chat_member(message.chat.id, message.reply_to_message)
+                    elif result and result.__name__.split('_')[0] == 'warn':
+                        bot.reply_to(message.reply_to_message, text=result(), parse_mode='markdown')
+                    elif result and result.__name__.split('_')[0] == 'unban':
+                        bot.reply_to(message.reply_to_message, text=result(), parse_mode='markdown')
+                    elif result and result.__name__.split('_')[0] == command[1:]:
+                        bot.reply_to(message.reply_to_message, text=result(), parse_mode='markdown')
+                except (AttributeError, KeyError, TypeError):
+                    pass
 
 
 bot.polling()
