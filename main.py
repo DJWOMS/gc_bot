@@ -1,5 +1,6 @@
 import telebot
 from telebot.types import Message
+import logging
 
 from credentials import BOT_TOKEN
 from commands import commands_dict
@@ -8,9 +9,22 @@ from db.sqlite_utils import (
     init_db,
 )
 
+
+logger = telebot.logger
+telebot.logger.setLevel(logging.DEBUG)
+
 bot = telebot.TeleBot(BOT_TOKEN)
 init_db()
 print(bot.get_me())
+
+
+def ban_process(message: Message, result):
+    user = build_user(message.reply_to_message)
+    bot.reply_to(message.reply_to_message, text=result(
+        message.from_user.username,
+        user,
+        message
+    ), parse_mode='markdown')
 
 
 @bot.message_handler(regexp='^![a-z]')
@@ -28,12 +42,7 @@ def handle_message(message: Message):
                 try:
                     result = commands_dict.sudo_commands[command]
                     if result and result.__name__.split('_')[0] == 'ban':
-                        user = build_user(message.reply_to_message)
-                        bot.reply_to(message.reply_to_message, text=result(
-                            message.from_user.username,
-                            user,
-                            message
-                        ), parse_mode='markdown')
+                        ban_process(message, result)
                     elif result and result.__name__.split('_')[0] == 'warn':
                         bot.reply_to(message.reply_to_message, text=result(), parse_mode='markdown')
                     elif result and result.__name__.split('_')[0] == 'unban':
