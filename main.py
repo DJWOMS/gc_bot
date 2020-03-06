@@ -31,7 +31,11 @@ def handle_message(message: Message):
                     result = commands_dict.sudo_commands[command]
                     if result and result.__name__.split('_')[0] == 'ban':
                         user = build_user(message.reply_to_message)
-                        bot.reply_to(message.reply_to_message, text=result(user), parse_mode='markdown')
+                        bot.reply_to(message.reply_to_message, text=result(
+                            message.from_user.username,
+                            user,
+                            message
+                        ), parse_mode='markdown')
                     elif result and result.__name__.split('_')[0] == 'warn':
                         bot.reply_to(message.reply_to_message, text=result(), parse_mode='markdown')
                     elif result and result.__name__.split('_')[0] == 'unban':
