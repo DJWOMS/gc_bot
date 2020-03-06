@@ -1,9 +1,8 @@
 import telebot
-from telebot import apihelper
 from telebot.types import Message
 import logging
 
-from credentials import BOT_TOKEN, PROXY
+from credentials import BOT_TOKEN
 from commands import commands_dict
 from utils import build_user
 from db.sqlite_utils import (
@@ -22,13 +21,16 @@ print(bot.get_me())
 def ban_process(message: Message, result):
     user = build_user(message.reply_to_message)
     bot.send_photo(
-        message.reply_to_message,
-        photo=open(f'{MEDIA_ROOT}\\Banned.jpg', 'rb'),
+        chat_id=message.chat.id,
+        photo=open(f'{MEDIA_ROOT}/userblock.jpg', 'rb'),
         caption=result(
             message.from_user.username,
             user,
             message
-        ), parse_mode='markdown')
+        ),
+        reply_to_message_id=message.reply_to_message.id,
+        parse_mode='markdown')
+    #bot.kick_chat_member(message.chat.id, message.reply_to_message)
 
 
 @bot.message_handler(regexp='^![a-z]')
@@ -46,8 +48,7 @@ def handle_message(message: Message):
                 try:
                     result = commands_dict.sudo_commands[command]
                     if result and result.__name__.split('_')[0] == 'ban':
-                        # ban_process(message, result)
-                        bot.kick_chat_member(message.chat.id, message.reply_to_message)
+                        ban_process(message, result)
                     elif result and result.__name__.split('_')[0] == 'warn':
                         bot.reply_to(message.reply_to_message, text=result(), parse_mode='markdown')
                     elif result and result.__name__.split('_')[0] == 'unban':
