@@ -19,7 +19,7 @@ print(bot.get_me())
 def handle_message(message: Message):
     user_id, command = message.from_user.id, message.text.split(' ')[0].lower()
     bot.delete_message(message.chat.id, message.message_id)
-    if not message.reply_to_message.from_user.is_bot:
+    if message.reply_to_message and not message.reply_to_message.from_user.is_bot:
         try:
             result = commands_dict.light_commands[command]
             if result:
@@ -29,26 +29,17 @@ def handle_message(message: Message):
             if user_id == 169603089:
                 try:
                     result = commands_dict.sudo_commands[command]
-                    if result and result.__name__.split('_')[0] == 'wall':
-                        bot.register_next_step_handler(result, message, process_wall_step)
-                    elif result and result.__name__.split('_')[0] == 'ban':
-                        bot.register_next_step_handler(result, message, process_ban_step)
+                    if result and result.__name__.split('_')[0] == 'ban':
+                        user = build_user(message.reply_to_message)
+                        bot.reply_to(message.reply_to_message, text=result(user), parse_mode='markdown')
                     elif result and result.__name__.split('_')[0] == 'warn':
-                        bot.register_next_step_handler(result, message, process_warn_step)
+                        bot.reply_to(message.reply_to_message, text=result(), parse_mode='markdown')
+                    elif result and result.__name__.split('_')[0] == 'unban':
+                        bot.reply_to(message.reply_to_message, text=result(), parse_mode='markdown')
+                    elif result and result.__name__.split('_')[0] == command[1:]:
+                        bot.reply_to(message.reply_to_message, text=result(), parse_mode='markdown')
                 except (AttributeError, KeyError, TypeError):
                     pass
 
-
-def process_wall_step(result, message):
-    bot.reply_to(message.reply_to_message, text=result(), parse_mode='markdown')
-
-
-def process_ban_step(result, message):
-    user = build_user(message.reply_to_message)
-    bot.reply_to(message.reply_to_message, text=result(user), parse_mode='markdown')
-
-
-def process_warn_step(result, message):
-    bot.reply_to(message.reply_to_message, text=result(), parse_mode='markdown')
 
 bot.polling()
