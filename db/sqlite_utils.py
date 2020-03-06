@@ -32,6 +32,14 @@ def init_db(conn: sqlite3.Connection, force: bool = False):
 
 
 @ensure_connection
+def load_warn_ban_users(conn: sqlite3.Connection):
+    c = conn.cursor()
+    c.execute('SELECT * FROM dc_users WHERE is_banned = 1 OR is_warn = 1')
+    res = c.fetchall()
+    return res
+
+
+@ensure_connection
 def ban_user_db(conn: sqlite3.Connection, user: User):
     c = conn.cursor()
     c.execute(

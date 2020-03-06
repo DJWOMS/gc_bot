@@ -8,10 +8,10 @@ from utils import build_user
 from db.sqlite_utils import (
     init_db,
 )
-
+from config import MEDIA_ROOT
 
 logger = telebot.logger
-telebot.logger.setLevel(logging.DEBUG)
+telebot.logger.setLevel(logging.INFO)
 
 bot = telebot.TeleBot(BOT_TOKEN)
 init_db()
@@ -20,11 +20,14 @@ print(bot.get_me())
 
 def ban_process(message: Message, result):
     user = build_user(message.reply_to_message)
-    bot.reply_to(message.reply_to_message, text=result(
-        message.from_user.username,
-        user,
-        message
-    ), parse_mode='markdown')
+    bot.send_photo(
+        message.reply_to_message,
+        photo=open(f'{MEDIA_ROOT}\\Banned.jpg', 'rb'),
+        caption=result(
+            message.from_user.username,
+            user,
+            message
+        ), parse_mode='markdown')
 
 
 @bot.message_handler(regexp='^![a-z]')
