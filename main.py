@@ -11,7 +11,7 @@ from db.sqlite_utils import (
 from config import MEDIA_ROOT
 
 logger = telebot.logger
-telebot.logger.setLevel(logging.INFO)
+telebot.logger.setLevel(logging.DEBUG)
 
 bot = telebot.TeleBot(BOT_TOKEN)
 init_db()
@@ -28,7 +28,7 @@ def ban_process(message: Message, result):
             user,
             message
         ),
-        reply_to_message_id=message.reply_to_message.id,
+        reply_to_message_id=message.reply_to_message,
         parse_mode='markdown')
     #bot.kick_chat_member(message.chat.id, message.reply_to_message)
 
