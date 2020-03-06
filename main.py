@@ -5,9 +5,7 @@ from credentials import BOT_TOKEN
 from commands import commands_dict
 from utils import build_user
 from db.sqlite_utils import (
-    init_db, add_user,
-    count_sudo_users, count_banned_users,
-    count_warn_users, update_user
+    init_db,
 )
 
 bot = telebot.TeleBot(BOT_TOKEN)
