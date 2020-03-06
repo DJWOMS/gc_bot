@@ -2,4 +2,4 @@ from db.models import User
 
 
 def ban_user(user: User):
-    return f'updated {user}'
+    return f'Пользователь {user.username} БАН {user.is_banned}'

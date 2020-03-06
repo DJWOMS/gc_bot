@@ -8,7 +8,7 @@ def build_user(message: Message):
     user_first_name = message.from_user.first_name
     user_last_name = message.from_user.last_name
     return User(
-        id=user_id,
+        user_id=user_id,
         username=username,
         first_name=user_first_name,
         last_name=user_last_name
