@@ -1,3 +1,4 @@
+from typing import Callable
 import telebot
 from telebot.types import Message
 import logging
@@ -18,7 +19,7 @@ init_db()
 print(bot.get_me())
 
 
-def ban_process(message: Message, result):
+def ban_process(message: Message, result: Callable):
     user = build_user(message.reply_to_message)
     bot.send_photo(
         chat_id=message.chat.id,
@@ -33,13 +34,13 @@ def ban_process(message: Message, result):
     #bot.kick_chat_member(message.chat.id, message.reply_to_message)
 
 
-def is_admin(chat_id):
-    return bot.get_chat_administrators(chat_id)
+def admin_list(chat_id: int) -> list:
+    admins = bot.get_chat_administrators(chat_id)
+    return [admin.user.id for admin in admins]
 
 
 @bot.message_handler(regexp='^![a-z]')
 def handle_message(message: Message):
-    print(is_admin(message.chat.id))
     user_id, command = message.from_user.id, message.text.split(' ')[0].lower()
     bot.delete_message(message.chat.id, message.message_id)
     if message.reply_to_message and not message.reply_to_message.from_user.is_bot:
@@ -49,7 +50,7 @@ def handle_message(message: Message):
                 bot.reply_to(message.reply_to_message, text=result(), parse_mode='markdown',
                              disable_web_page_preview=True)
         except (AttributeError, KeyError):
-            if user_id == 169603089:
+            if user_id in admin_list(message.chat.id):
                 try:
                     result = commands_dict.sudo_commands[command]
                     if result and result.__name__.split('_')[0] == 'ban':
