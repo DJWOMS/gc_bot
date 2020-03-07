@@ -22,7 +22,7 @@ def ban_process(message: Message, result):
     user = build_user(message.reply_to_message)
     bot.send_photo(
         chat_id=message.chat.id,
-        photo=open(f'{MEDIA_ROOT}/userblock.jpg', 'rb'),
+        photo='AgACAgIAAxkDAAIBt15iuBjifOydpm759urePec6VHJgAALirDEbV48YS6MzQ4NoFW4IRSbBDgAEAQADAgADbQADhKoDAAEYBA',
         caption=result(
             message.from_user.username,
             user,
