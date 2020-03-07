@@ -33,8 +33,13 @@ def ban_process(message: Message, result):
     #bot.kick_chat_member(message.chat.id, message.reply_to_message)
 
 
+def is_admin(chat_id):
+    return bot.get_chat_administrators(chat_id)
+
+
 @bot.message_handler(regexp='^![a-z]')
 def handle_message(message: Message):
+    print(is_admin(message.chat.id))
     user_id, command = message.from_user.id, message.text.split(' ')[0].lower()
     bot.delete_message(message.chat.id, message.message_id)
     if message.reply_to_message and not message.reply_to_message.from_user.is_bot:
