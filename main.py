@@ -43,6 +43,7 @@ def ban_process(message: Message, result: Callable) -> Message:
             parse_mode='markdown')
     else:
         response = f'{message.reply_to_message} Уже забанен!'
+        bot.reply_to(message.reply_to_message, text=response, parse_mode='markdown')
     return response
 
 
