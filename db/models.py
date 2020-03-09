@@ -19,7 +19,7 @@ class User(Model):
     username = CharField(null=True, verbose_name='Никнейм')
     first_name = CharField(null=True, verbose_name='Имя пользователя')
     last_name = CharField(null=True, verbose_name='Фамилия')
-    warn = SmallIntegerField(verbose_name='Предупреждения')
+    warn = SmallIntegerField(null=True, verbose_name='Предупреждения')
 
     class Meta:
         database = db
