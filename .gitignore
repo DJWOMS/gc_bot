@@ -3,4 +3,4 @@ venv/
 credentials.py
 __pycahe__/
 *.pyc
-dc_users.db
+dcgc_group.db
