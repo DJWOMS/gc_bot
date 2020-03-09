@@ -27,23 +27,23 @@ def ban_process(message: Message, result: Callable) -> Message:
     """
     user, created = get_or_create_user(message.reply_to_message)
     print(user, created)
-    # if user:
-    #     # kick user from chat aka ban
-    #     # response = bot.kick_chat_member(message.chat.id, message.reply_to_message)
-    #     response = 'success'
-    #     bot.send_photo(
-    #         chat_id=message.chat.id,
-    #         photo='AgACAgIAAxkDAAIBt15iuBjifOydpm759urePec6VHJgAALirDEbV48YS6MzQ4NoFW4IRSbBDgAEAQADAgADbQADhKoDAAEYBA',
-    #         caption=result(
-    #             message.from_user.username,
-    #             user,
-    #             message
-    #         ),
-    #         reply_to_message_id=message.reply_to_message,
-    #         parse_mode='markdown')
-    # else:
-    #     response = f'{message.reply_to_message} Уже забанен!'
-    # return response
+    if created:
+        # kick user from chat aka ban
+        # response = bot.kick_chat_member(message.chat.id, message.reply_to_message)
+        response = 'success'
+        bot.send_photo(
+            chat_id=message.chat.id,
+            photo='AgACAgIAAxkDAAIBt15iuBjifOydpm759urePec6VHJgAALirDEbV48YS6MzQ4NoFW4IRSbBDgAEAQADAgADbQADhKoDAAEYBA',
+            caption=result(
+                message.from_user.username,
+                user,
+                message
+            ),
+            reply_to_message_id=message.reply_to_message,
+            parse_mode='markdown')
+    else:
+        response = f'{message.reply_to_message} Уже забанен!'
+    return response
 
 
 def admin_list(chat_id: int) -> list:
