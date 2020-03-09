@@ -28,6 +28,7 @@ def init_db(conn: sqlite3.Connection, force: bool = False):
             warn       INTEGER
         )
     ''')
+    print(dir(c))
     conn.commit()
 
 
@@ -42,13 +43,15 @@ def load_warn_ban_users(conn: sqlite3.Connection):
 @ensure_connection
 def ban_user_db(conn: sqlite3.Connection, user: User):
     c = conn.cursor()
-    c.execute(
-        '''INSERT INTO dc_users (
-                user_id, username, first_name, last_name, is_sudo, is_banned, warn
-            ) VALUES (?, ?, ?, ?, ?, ?, ?)''',
-        (user.user_id, user.username, user.first_name, user.last_name, user.is_sudo, user.is_banned, user.warn)
-    )
-    conn.commit()
+    user_exists = c.execute('SELECT user_id FROM dc_users WHERE user_id = ?', user.user_id)
+    print(user_exists)
+    # c.execute(
+    #     '''INSERT INTO dc_users (
+    #             user_id, username, first_name, last_name, is_sudo, is_banned, warn
+    #         ) VALUES (?, ?, ?, ?, ?, ?, ?)''',
+    #     (user.user_id, user.username, user.first_name, user.last_name, user.is_sudo, user.is_banned, user.warn)
+    # )
+    # conn.commit()
 
 
 @ensure_connection

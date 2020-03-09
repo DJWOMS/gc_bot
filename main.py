@@ -5,10 +5,8 @@ import logging
 
 from credentials import BOT_TOKEN
 from commands import commands_dict
-from utils import build_user
-from db.sqlite_utils import (
-    init_db,
-)
+from db.models import init_db, User, Sudo, BlackList
+from utils import get_or_create_user
 from config import MEDIA_ROOT
 
 logger = telebot.logger
@@ -19,22 +17,41 @@ init_db()
 print(bot.get_me())
 
 
-def ban_process(message: Message, result: Callable):
-    user = build_user(message.reply_to_message)
-    bot.send_photo(
-        chat_id=message.chat.id,
-        photo='AgACAgIAAxkDAAIBt15iuBjifOydpm759urePec6VHJgAALirDEbV48YS6MzQ4NoFW4IRSbBDgAEAQADAgADbQADhKoDAAEYBA',
-        caption=result(
-            message.from_user.username,
-            user,
-            message
-        ),
-        reply_to_message_id=message.reply_to_message,
-        parse_mode='markdown')
-    #bot.kick_chat_member(message.chat.id, message.reply_to_message)
+def ban_process(message: Message, result: Callable) -> Message:
+    """
+    get_user_or_create check user in db and return user
+    Creating User instance. Kicking user from chat and send group message about it.
+    :param: message: telebot Message: current message data with user sender, chat_id and so on
+    :param: result: function: selected function from function dictionary.
+    :return: Message: telegram result api message
+    """
+    user, created = get_or_create_user(message.reply_to_message)
+    print(user, created)
+    # if user:
+    #     # kick user from chat aka ban
+    #     # response = bot.kick_chat_member(message.chat.id, message.reply_to_message)
+    #     response = 'success'
+    #     bot.send_photo(
+    #         chat_id=message.chat.id,
+    #         photo='AgACAgIAAxkDAAIBt15iuBjifOydpm759urePec6VHJgAALirDEbV48YS6MzQ4NoFW4IRSbBDgAEAQADAgADbQADhKoDAAEYBA',
+    #         caption=result(
+    #             message.from_user.username,
+    #             user,
+    #             message
+    #         ),
+    #         reply_to_message_id=message.reply_to_message,
+    #         parse_mode='markdown')
+    # else:
+    #     response = f'{message.reply_to_message} Уже забанен!'
+    # return response
 
 
 def admin_list(chat_id: int) -> list:
+    """
+    Get all admins in group
+    :param chat_id: int: telegram chat id
+    :return: list: id`s list of all admins in groups
+    """
     admins = bot.get_chat_administrators(chat_id)
     return [admin.user.id for admin in admins]
 
