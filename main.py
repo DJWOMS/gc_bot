@@ -19,9 +19,10 @@ print(bot.get_me())
 
 
 def ban_process(message: Message, result):
-    user = build_user(message.reply_to_message)
+    reply_to = message.reply_to_message
+    user = build_user(reply_to)
     bot.send_photo(
-        message.reply_to_message,
+        reply_to,
         photo=open(f'{MEDIA_ROOT}\\Banned.jpg', 'rb'),
         caption=result(
             message.from_user.username,
