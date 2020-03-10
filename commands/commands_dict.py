@@ -6,6 +6,7 @@ light_commands = {
     '!web': search_web,
     '!tut': django_tutorials,
     '!wq': wide_question,
+    '!flood': flood,
 }
 
 
