@@ -31,7 +31,7 @@ class User(Model):
 
 class Sudo(Model):
     """Table for superusers"""
-    user = ForeignKeyField(User, null=True, verbose_name='Пользователь')
+    user = ForeignKeyField(User, null=True, verbose_name='Пользователь', on_delete='CASCADE')
     datetime_add = DateTimeField(verbose_name='Дата и время добавления')
 
     class Meta:

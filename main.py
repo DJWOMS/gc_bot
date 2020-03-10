@@ -49,13 +49,14 @@ def ban_process(message: Message, result: Callable) -> Message:
 
 
 def unban_process(message: Message):
-    """Delete user from user and blacklist tables"""
+    """Delete user from user and blacklist tables.
+    Peewee can`t delete FK automatically because SQLite does not support.
+    """
     user = User.delete().where(User.telegram_id == message.reply_to_message.from_user.id).execute()
     BlackList.delete().where(BlackList.user_id == user).execute()
 
 
 def warn_process(message: Message, result: Callable):
-    print('here')
     user, created = get_or_create_user(message.reply_to_message)
     if user:
         bot.reply_to(message.reply_to_message, text=result(
@@ -82,7 +83,8 @@ def handle_message(message: Message):
     """
     user_id, command = message.from_user.id, message.text.split(' ')[0].lower()
     bot.delete_message(message.chat.id, message.message_id)
-    if message.reply_to_message and not message.reply_to_message.from_user.is_bot:
+    reply_to = message.reply_to_message
+    if reply_to and not reply_to.from_user.is_bot and reply_to.from_user.id not in admin_list(message.chat.id):
         try:
             result = commands_dict.light_commands[command]
             if result:
