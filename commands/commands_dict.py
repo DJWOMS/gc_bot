@@ -6,6 +6,7 @@ light_commands = {
     '!web': search_web,
     '!tut': django_tutorials,
     '!wq': wide_question,
+    '!flood': flood,
 }
 
 
@@ -14,5 +15,4 @@ sudo_commands = {
     '!warn': warn_user,
     '!sudo': add_sudo_user,
     '!unban': unban_user,
-    '!wall': wall_post,
 }
