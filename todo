@@ -1,0 +1,6 @@
++ Get all sudoers from db when bot is starting
++ is_sudo user table
+- Create sudo command add/remove
+- Add datetime to blacklist to unban
+- ban forever
+- parse days
