@@ -83,7 +83,7 @@ def warn_process(message: Message, result: Callable):
             message.from_user.username,
             user,
             message
-        ), parse_mode='markdown', )
+        ), parse_mode='markdown')
 
 
 def sudo_process(message: Message, result: Callable):

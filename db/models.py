@@ -7,9 +7,7 @@ from peewee import (
     BooleanField,
 )
 
-db = SqliteDatabase('dcgc_channels.db', pragmas={
-    'foreign_keys': 1,  # Enforce foreign-key constraints
-})
+db = SqliteDatabase('dcgc_channels.db')
 
 
 class User(Model):
@@ -34,15 +32,9 @@ class User(Model):
 
 class BlackList(Model):
     """Table for banned users"""
-    user = ForeignKeyField(User, verbose_name='Пользователь', on_delete='CASCADE')
+    user = ForeignKeyField(User, verbose_name='Пользователь')
     datetime_add = DateTimeField(verbose_name='Дата и время добавления', default=datetime.now())
     till_date = DateTimeField(verbose_name='Дата и время снятия бана')
-
-
-class Sudo(Model):
-    """Table for superusers"""
-    user = ForeignKeyField(User, null=True, verbose_name='Пользователь', on_delete='CASCADE')
-    datetime_add = DateTimeField(verbose_name='Дата и время добавления')
 
     class Meta:
         database = db
