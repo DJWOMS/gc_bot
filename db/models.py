@@ -38,6 +38,12 @@ class BlackList(Model):
     datetime_add = DateTimeField(verbose_name='Дата и время добавления', default=datetime.now())
     till_date = DateTimeField(verbose_name='Дата и время снятия бана')
 
+
+class Sudo(Model):
+    """Table for superusers"""
+    user = ForeignKeyField(User, null=True, verbose_name='Пользователь', on_delete='CASCADE')
+    datetime_add = DateTimeField(verbose_name='Дата и время добавления')
+
     class Meta:
         database = db
 
