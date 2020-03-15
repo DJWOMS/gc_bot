@@ -14,10 +14,10 @@ def ban_user(username: Message, user: User, reason: Message) -> str:
     :return str: message to telegram chat about ban a specific user
     """
     dt, text = to_unix_time(reason)
-    BlackList.create(user=user, datetime_add=datetime.today().strftime('%Y-%m-%d %H:%M:%S'), till_date=dt)
+    BlackList.create(user=user, datetime_add=datetime.today(), till_date=dt)
     banned_user = prepare_user_data(user)
-    dt = dt.split('.')[:-1]
+    till_date = dt.strftime('%Y-%m-%d %H:%M:%S')
     if text and banned_user:
-        return f'*{username} забанил пользователя {banned_user} До:{dt}\nПричина:*\n`{text}`'
+        return f'*{username} забанил пользователя {banned_user} До:{till_date}\nПричина:*\n`{text}`'
     else:
-        return f'*{username} забанил пользователя {banned_user} До: {dt}*'
+        return f'*{username} забанил пользователя {banned_user} До: {till_date}*'

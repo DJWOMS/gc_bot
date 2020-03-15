@@ -34,27 +34,26 @@ def prepare_user_data(user: User) -> str:
 
 def to_unix_time(message: Message) -> tuple:
     """
+    This shitless function need to be overriden.
     Parse message and get ban time in unix timestamp.
     :param: message: Telegram API Message
     :return: tuple. Text. Unix timestamp else None
     """
     msg = message.text.split()[1:]
-    hours = 0
-    minutes = 0
-    text = ''
+    days, hours, minutes = 0, 0, 0
+    text = msg[-1]
     till = None
     for data in msg:
         try:
+            if data.endswith('d'):
+                days = int(data[:-1])
             if data.endswith('h'):
                 hours = int(data[:-1])
             if data.endswith('m'):
                 minutes = int(data[:-1])
-            else:
-                text = data
-            till = datetime.datetime.now() + datetime.timedelta(hours=hours, minutes=minutes)
+            till = datetime.datetime.now() + datetime.timedelta(days=days, hours=hours, minutes=minutes)
         except ValueError:
             pass
-
-    return till.strftime('%Y-%m-%d %H:%M:%S'), text
+    return till, text
 
 
