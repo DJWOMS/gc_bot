@@ -7,4 +7,3 @@ from commands.warn_user import warn_user
 from commands.wide_question import wide_question
 from commands.unban_user import unban_user
 from commands.flood import flood
-from commands.new_member import greet_new_member

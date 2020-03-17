@@ -1,3 +1,5 @@
+"""Light commands available to all users. But sudo only admin or sudoers"""
+
 from commands import *
 
 

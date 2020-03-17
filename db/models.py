@@ -7,7 +7,9 @@ from peewee import (
     BooleanField,
 )
 
-db = SqliteDatabase('dcgc_channels.db')
+db = SqliteDatabase('dcgc_channels.db', pragmas={
+    'foreign_keys': 1
+})
 
 
 class User(Model):
@@ -32,7 +34,7 @@ class User(Model):
 
 class BlackList(Model):
     """Table for banned users"""
-    user = ForeignKeyField(User, verbose_name='Пользователь')
+    user = ForeignKeyField(User, verbose_name='Пользователь', on_delete='CASCADE')
     datetime_add = DateTimeField(verbose_name='Дата и время добавления', default=datetime.now())
     till_date = DateTimeField(verbose_name='Дата и время снятия бана')
 
@@ -76,3 +78,7 @@ def get_warn_users(telegram_id: int) -> str:
         return '<Model: Warns> instance matching query does not exist'
     return query
 
+
+def printer(message):
+    print(message)
+    return User.select().dict()
