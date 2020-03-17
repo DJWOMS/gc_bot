@@ -79,6 +79,7 @@ def get_warn_users(telegram_id: int) -> str:
     return query
 
 
-def printer(message):
-    print(message)
-    return User.select().dict()
+def clear_unbanned_users():
+    ids = BlackList.select(BlackList.user_id).where(BlackList.till_date <= datetime.now())
+    user = User.delete().where(User.id in ids).execute()
+    return user

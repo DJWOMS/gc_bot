@@ -8,6 +8,7 @@ from credentials import BOT_TOKEN, PROXY
 from commands.commands_dict import light_commands, sudo_commands
 from db.models import init_db
 from utils import admin_list
+from scheduler import scheduler_init
 
 # VIEWS
 from views.ban_process import ban_process
@@ -24,8 +25,11 @@ from views.warn_process import warn_process
 bot = telebot.TeleBot(BOT_TOKEN)
 apihelper.proxy = {'https': 'socks5://{}'.format(PROXY)}
 
+print('@@@ => INITIALIZE DATABASE <= @@@')
 init_db()
-print('@@@ =>', bot.get_me(), '<= @@@')
+print('@@@ => INITIALIZE SCHEDULER <= @@@')
+scheduler_init()
+print('@@@ => INITIALIZE BOT', bot.get_me(), '<= @@@')
 
 
 @bot.message_handler(regexp='^![a-z]')
