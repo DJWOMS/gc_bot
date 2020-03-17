@@ -2,7 +2,7 @@ from datetime import datetime
 
 from telebot.types import Message
 from db.models import User, BlackList
-from utils import prepare_user_data
+from utils import prepare_user_data, to_unix_time
 
 
 def ban_user(username: Message, user: User, reason: Message) -> str:
@@ -13,10 +13,11 @@ def ban_user(username: Message, user: User, reason: Message) -> str:
     :param reason: telebot Message: message to reply in telegram with reason to ban
     :return str: message to telegram chat about ban a specific user
     """
-    BlackList.create(user=user, datetime_add=datetime.today().strftime('%Y-%m-%d %H:%M:%S'))
-    reason = ' '.join(reason.text.split(' ')[1:])
+    dt, text = to_unix_time(reason)
+    BlackList.create(user=user, datetime_add=datetime.today(), till_date=dt)
     banned_user = prepare_user_data(user)
-    if reason and banned_user:
-        return f'*{username} забанил пользователя {banned_user}\nПричина:*\n`{reason}`'
+    till_date = dt.strftime('%Y-%m-%d %H:%M:%S')
+    if text and banned_user:
+        return f'*{username} забанил пользователя {banned_user} До:{till_date}\nПричина:*\n`{text}`'
     else:
-        return f'*{username} забанил пользователя {banned_user}*'
+        return f'*{username} забанил пользователя {banned_user} До: {till_date}*'

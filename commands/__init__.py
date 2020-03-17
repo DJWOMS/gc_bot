@@ -1,4 +1,4 @@
-from commands.add_sudo_user import add_sudo_user
+from commands.sudo_add_user import sudo_add_user
 from commands.ban_user import ban_user
 from commands.django_tutorials import django_tutorials
 from commands.search_web import search_web

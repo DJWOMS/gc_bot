@@ -1,0 +1,13 @@
++ Get all sudoers from db when bot is starting
++ is_sudo user table
++ Create sudo command add/remove
++ Add datetime to blacklist to unban
++ ban forever
++ parse days
++ kick from chat
+- load banned users when bot is starting
+- command dispatcher
+- load sudo users when bot starting. Check in list before call sudo process. Update list if add/remove sudo user
+- warning table with fk to user
+- warning process. Three warnings and user blocks what time?
+- Check recipient when send message. If sudo or admin then block

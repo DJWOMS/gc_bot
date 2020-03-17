@@ -1,5 +1,6 @@
 """Helper utility for project"""
 
+import datetime
 from db.models import User
 from telebot.types import Message
 
@@ -29,3 +30,30 @@ def prepare_user_data(user: User) -> str:
     banned_user = [getattr(user, attr) for attr in dir(user) if attr in attrs]
     b_user = ' '.join([i for i in banned_user if i is not None])
     return b_user
+
+
+def to_unix_time(message: Message) -> tuple:
+    """
+    This shitless function need to be overriden.
+    Parse message and get ban time in unix timestamp.
+    :param: message: Telegram API Message
+    :return: tuple. Text. Unix timestamp else None
+    """
+    msg = message.text.split()[1:]
+    days, hours, minutes = 0, 0, 0
+    text = msg[-1]
+    till = None
+    for data in msg:
+        try:
+            if data.endswith('d'):
+                days = int(data[:-1])
+            if data.endswith('h'):
+                hours = int(data[:-1])
+            if data.endswith('m'):
+                minutes = int(data[:-1])
+            till = datetime.datetime.now() + datetime.timedelta(days=days, hours=hours, minutes=minutes)
+        except ValueError:
+            pass
+    return till, text
+
+

@@ -13,6 +13,6 @@ light_commands = {
 sudo_commands = {
     '!ban': ban_user,
     '!warn': warn_user,
-    '!sudo': add_sudo_user,
+    '!sudo': sudo_add_user,
     '!unban': unban_user,
 }
