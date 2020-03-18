@@ -4,17 +4,17 @@ from commands import *
 
 
 light_commands = {
-    '!paste': share_code,
-    '!web': search_web,
-    '!tut': django_tutorials,
-    '!wq': wide_question,
-    '!flood': flood,
+    '!paste': share_process,
+    '!web': web_process,
+    '!tut': tut_process,
+    '!wq': wq_process,
+    '!flood': flood_process,
 }
 
 
 sudo_commands = {
-    '!ban': ban_user,
-    '!warn': warn_user,
-    '!sudo': sudo_add_user,
-    '!unban': unban_user,
+    '!ban': ban_process,
+    '!warn': warn_process,
+    '!sudo': sudo_process,
+    '!unban': unban_process,
 }

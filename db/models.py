@@ -44,7 +44,7 @@ class BlackList(Model):
 
 class Warns(Model):
     """Warnings table"""
-    user = ForeignKeyField(User, verbose_name='Пользователь')
+    user = ForeignKeyField(User, verbose_name='Пользователь', on_delete='CASCADE')
     warn_number = IntegerField(default=0, verbose_name='Номер предупреждения')
     reason = CharField(verbose_name='Причина предупреждения')
     datetime_add = DateTimeField(verbose_name='Дата и время добавления', default=datetime.now())

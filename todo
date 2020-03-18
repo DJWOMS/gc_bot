@@ -6,13 +6,16 @@
 + parse days
 + kick from chat
 - load banned users when bot is starting
-- command dispatcher
++ command dispatcher
 - load sudo users when bot starting. Check in list before call sudo process. Update list if add/remove sudo user
-- warning table with fk to user
-- warning process. Three warnings and user blocks what time?
++ warning table with fk to user
++ warning process. Three warnings and user blocks
 + Check recipient when send message. If sudo or admin then block
 + reformat all docstring in functions as unban_user
 - Unban specific user if user indicates in command like !unban id
 + Split process fix out of range
 - Unban auto task by till datetime
 + Views
++ check unban_process user auto delete fk if delete user
+- register view on init bot
+- check names of view equals command name

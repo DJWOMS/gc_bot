@@ -1,11 +1,12 @@
+import datetime
 import telebot
 from telebot.types import Message
-from typing import Callable
 
-from utils import to_unix_time, get_or_create_user
+from db.models import BlackList
+from utils import to_unix_time, get_or_create_user, prepare_user_data
 
 
-def ban_process(message: Message, result: Callable, bot: telebot) -> Message:
+def ban_process(message: Message, bot: telebot) -> Message:
     """
     get_user_or_create check user in db and return user
     Creating User instance. Kicking user from chat and send group message about it.
@@ -17,7 +18,15 @@ def ban_process(message: Message, result: Callable, bot: telebot) -> Message:
     """
     msg = message.text.split()
     if len(msg) > 1:
+        dt, text = to_unix_time(message)
         user, created = get_or_create_user(message.reply_to_message)
+        BlackList.create(user=user, datetime_add=datetime.datetime.today(), till_date=dt)
+        banned_user = prepare_user_data(user)
+        till_date = dt.strftime('%Y-%m-%d %H:%M:%S')
+        if text:
+            msg = f'*{user.username} заблокировал пользователя {banned_user} До:{till_date}\nПричина:*\n`{text}`'
+        else:
+            msg = f'*{user.username} заблокировал пользователя {banned_user} До: {till_date}*'
         if created:
             if msg[1] == 'kick':
                 # kick user from chat aka ban forever
@@ -26,16 +35,11 @@ def ban_process(message: Message, result: Callable, bot: telebot) -> Message:
                 bot.send_photo(
                     chat_id=message.chat.id,
                     photo='AgACAgIAAxkDAAIBt15iuBjifOydpm759urePec6VHJgAALirDEbV48YS6MzQ4NoFW4IRSbBDgAEAQADAgADbQADhKoDAAEYBA',
-                    caption=result(
-                        message.from_user.username,
-                        user,
-                        message
-                    ),
+                    caption=msg,
                     reply_to_message_id=message.reply_to_message,
                     parse_mode='markdown',
                 )
                 # ban user for specific time
-                dt, _ = to_unix_time(message)
                 response = bot.restrict_chat_member(
                     message.chat.id,
                     message.reply_to_message.from_user.id,

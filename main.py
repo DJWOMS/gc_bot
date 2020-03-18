@@ -14,7 +14,6 @@ from scheduler import scheduler_init
 from views.ban_process import ban_process
 from views.unban_process import unban_process
 from views.sudo_process import sudo_process
-from views.warn_process import warn_process
 
 # logger = telebot.logger
 # telebot.logger.setLevel(logging.DEBUG)
@@ -44,26 +43,13 @@ def handle_message(message: Message):
     if message.reply_to_message and not message.reply_to_message.from_user.is_bot:
         reply_to = message.reply_to_message
         if reply_to and not reply_to.from_user.is_bot and reply_to.from_user.id not in admin_list(message.chat.id, bot):
-
-            try:
-                result = light_commands[command]
-                if result:
-                    bot.reply_to(message.reply_to_message, text=result(), parse_mode='markdown',
-                                 disable_web_page_preview=True)
-            except (AttributeError, KeyError):
-                if user_id in admin_list(message.chat.id, bot):
+            if command:
+                try:
+                    light_commands[command](message, bot)
+                except (AttributeError, KeyError, TypeError):
                     try:
-                        result = sudo_commands[command]
-                        if result and result.__name__.split('_')[0] == 'ban':
-                            ban_process(message, result, bot)
-                        elif result and result.__name__.split('_')[0] == 'warn':
-                            warn_process(message, result, bot)
-                        elif result and result.__name__.split('_')[0] == 'unban':
-                            unban_process(message, result, bot)
-                        elif result and result.__name__.split('_')[0] == 'sudo':
-                            sudo_process(message, result, bot)
-                        elif result and result.__name__.split('_')[0] == command[1:]:
-                            bot.reply_to(message.reply_to_message, text=result(), parse_mode='markdown')
+                        if user_id in admin_list(message.chat.id, bot):
+                            sudo_commands[command](message, bot)
                     except (AttributeError, KeyError, TypeError):
                         pass
 
