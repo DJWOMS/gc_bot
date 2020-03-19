@@ -5,15 +5,10 @@ from telebot.types import Message
 import logging
 
 from credentials import BOT_TOKEN, PROXY
-from commands.commands_dict import light_commands, sudo_commands
+from commands import init_light_command, init_sudo_command
 from db.models import init_db
 from utils import admin_list
 from scheduler import scheduler_init
-
-# VIEWS
-from views.ban_process import ban_process
-from views.unban_process import unban_process
-from views.sudo_process import sudo_process
 
 # logger = telebot.logger
 # telebot.logger.setLevel(logging.DEBUG)
@@ -29,6 +24,11 @@ init_db()
 print('@@@ => INITIALIZE SCHEDULER <= @@@')
 scheduler_init()
 print('@@@ => INITIALIZE BOT', bot.get_me(), '<= @@@')
+
+
+# INITIALIZE AVAILABLE COMMANDS
+light_commands = init_light_command('flood', 'share', 'tut', 'web', 'wq')
+sudo_commands = init_sudo_command('ban', 'unban', 'sudo', 'warn')
 
 
 @bot.message_handler(regexp='^![a-z]')

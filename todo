@@ -12,10 +12,14 @@
 + warning process. Three warnings and user blocks
 + Check recipient when send message. If sudo or admin then block
 + reformat all docstring in functions as unban_user
-- Unban specific user if user indicates in command like !unban id
+- Unban specific user if user indicates in command like !unban id. Bot inline menu
+- Del sudoers by id. Bot inline menu
 + Split process fix out of range
 - Unban auto task by till datetime
 + Views
 + check unban_process user auto delete fk if delete user
-- register view on init bot
-- check names of view equals command name
++ register view on init bot
++ check names of view equals command name AttributeError
+- tests
+- README
+- sqlalchemy instead peewee

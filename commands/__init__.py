@@ -1,9 +1,35 @@
-from views.sudo_process import sudo_process
-from views.ban_process import ban_process
-from views.tut_process import tut_process
-from views.web_process import web_process
-from views.share_process import share_process
-from views.warn_process import warn_process
-from views.wq_process import wq_process
-from views.unban_process import unban_process
-from views.flood_process import flood_process
+"""Light commands available to all users. But sudo only admin or sudoers"""
+from typing import Sequence, Dict, Callable
+
+from views import *
+import views
+
+
+def init_light_command(*commands: Sequence[str]) -> Dict[str, Callable]:
+    light_command = {}
+    for command in commands:
+        for view in views.__all__:
+            if command == view.split('_')[0]:
+                try:
+                    light_command[f'!{command}'] = getattr(globals()[view], view)
+                except AttributeError as err:
+                    print(
+                        f'{err}. '
+                        f'May be you forget add or rename function. Module and function name must be the same name!'
+                    )
+    return light_command
+
+
+def init_sudo_command(*commands: Sequence[str]) -> Dict[str, Callable]:
+    sudo_command = {}
+    for command in commands:
+        for view in views.__all__:
+            if command == view.split('_')[0]:
+                try:
+                    sudo_command[f'!{command}'] = getattr(globals()[view], view)
+                except AttributeError as err:
+                    print(
+                        f'{err}. '
+                        f'May be you forget add or rename function. Module and function name must be the same name!'
+                    )
+    return sudo_command
