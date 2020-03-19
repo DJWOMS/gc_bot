@@ -11,14 +11,18 @@
 
     ```light_commands = init_light_command(... 'test') # регистрируем новую команду 'test'```
 
-2. В папке views создаем новый модуль ```test_process.py```. Название модуля может быть любым, но **обязательно
+2. ```views```
+
+    В папке views создаем новый модуль ```test_process.py```. Название модуля может быть любым, но **обязательно
     разделяться нижним подчеркиванием _ и первое слово должно полностью соответствовать имени команды**.
-    Хорошим тоном будет придерживаться следующему именованию '_command_process_.py'.
-3. Внутри модуля ```test_process.py``` необходимо создать функцию с аналогичным именем.
+    Хорошим тоном будет придерживаться следующемего именования '_command_process_.py'.
+3. ```test_process.py```
+
+    Внутри модуля ```test_process.py``` необходимо создать функцию с аналогичным именем.
     **Важно! Функция должна иметь то же имя, что и содержащий ее модуль**.
     ```test_process.py <- def test_process(): pass```.
  4. Функция принимает на вход два аргумета и возвращает один:
-    ```def unban_process(message: Message, bot: telebot) -> Message: pass```.
+    ```def test_process(message: Message, bot: telebot) -> Message: pass```.
     
     ```message``` - Сообщение от сервера Telegram API. Данное сообщение разбирается и из него
     достаются необходимые данные, такие как:
@@ -33,7 +37,7 @@
     
     Функция возвращает ```Message``` - ответ от сервера Telegram.
     
- _Пример функции ```test```_
+ _Пример функции ```test_process```_
  
  ```python
 import telebot
@@ -42,7 +46,7 @@ from telebot.types import Message
 
 def test_process(message: Message, bot: telebot) -> Message:
     """Test function"""
-    msg = """Hello world!"""
+    msg = """*Hello world!*"""
     return bot.reply_to(message.reply_to_message, text=msg, parse_mode='markdown',
                         disable_web_page_preview=True)
 ```
