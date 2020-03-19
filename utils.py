@@ -1,7 +1,6 @@
 """Helper utility for project"""
 
 import datetime
-from typing import Tuple, Dict
 import telebot
 from telebot.types import Message
 from db.models import User
@@ -74,9 +73,4 @@ def admin_list(chat_id: int, bot: telebot) -> list:
     admins = bot.get_chat_administrators(chat_id)
     return [admin.user.id for admin in admins]
 
-
-# def register_view(view) -> Tuple[Dict, Dict]:
-#     light_commands = {}
-#     sudo_commands = {}
-#     return light_commands, sudo_commands
 

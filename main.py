@@ -5,7 +5,7 @@ from telebot.types import Message
 import logging
 
 from credentials import BOT_TOKEN, PROXY
-from commands.commands_dict import init_light_command, init_sudo_command
+from commands import init_light_command, init_sudo_command
 from db.models import init_db
 from utils import admin_list
 from scheduler import scheduler_init

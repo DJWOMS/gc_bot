@@ -22,3 +22,4 @@
 + check names of view equals command name AttributeError
 - tests
 - README
+- sqlalchemy instead peewee
