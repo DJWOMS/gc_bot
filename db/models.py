@@ -7,9 +7,7 @@ from peewee import (
     BooleanField,
 )
 
-db = SqliteDatabase('dcgc_channels.db', pragmas={
-    'foreign_keys': 1
-})
+db = SqliteDatabase('dcgc_channels.db')
 
 
 class User(Model):
@@ -55,6 +53,7 @@ class Warns(Model):
 
 
 def init_db():
+    """Initialize db. Create tables if not exists"""
     db.create_tables([User, BlackList, Warns], safe=True)
 
 
@@ -80,6 +79,7 @@ def get_warn_users(telegram_id: int) -> str:
 
 
 def clear_unbanned_users():
+    """Hard style of deleting users form db. Is scheduler runs every n minutes."""
     ids = BlackList.select(BlackList.user_id).where(BlackList.till_date <= datetime.now())
     user = User.delete().where(User.id in ids).execute()
     return user

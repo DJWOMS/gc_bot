@@ -27,7 +27,7 @@ def prepare_user_data(user: User) -> str:
     :param user: Telegram user after saving in db
     :return str: not None user fields
     """
-    attrs = ['first_name', 'last_name']
+    attrs = ['username', 'first_name', 'last_name']
     banned_user = [getattr(user, attr) for attr in dir(user) if attr in attrs]
     b_user = ' '.join([i for i in banned_user if i is not None])
     return b_user

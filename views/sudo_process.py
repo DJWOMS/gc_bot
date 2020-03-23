@@ -8,9 +8,8 @@ from utils import get_or_create_user, prepare_user_data
 
 def sudo_process(message: Message, bot: telebot):
     """
-    Add or remove user from sudoers
+    Add or remove user from sudoers. Bot replying result in private message.
     :param message: Telegram API Message
-    :param result: Selected function from function dictionary.
     :param bot: Telebot instance
     """
     msg = message.text.split()

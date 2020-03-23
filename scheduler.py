@@ -3,10 +3,9 @@ import logging
 
 from db.models import clear_unbanned_users
 
-logging.basicConfig()
-logging.getLogger('apscheduler').setLevel(logging.DEBUG)
 
 scheduler = BackgroundScheduler({
+    # STORE IN DB OR RAM
     # 'apscheduler.jobstores.default': {
     #     'type': 'sqlalchemy',
     #     'url': 'sqlite:///dcgc_channels.db'
@@ -25,7 +24,8 @@ scheduler = BackgroundScheduler({
 })
 
 
-def scheduler_init():
+def scheduler_init_unban_users():
+    """Working process every two minutes. Very bad idea"""
     if not scheduler.running:
         scheduler.start()
         scheduler.add_job(

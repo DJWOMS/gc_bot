@@ -1,16 +1,18 @@
 import datetime
-import logging
 import telebot
 from telebot.types import Message
 from db.models import Warns
 from utils import prepare_user_data, get_or_create_user
 
-logger_peewee = logging.getLogger('peewee')
-logger_peewee.addHandler(logging.StreamHandler())
-logger_peewee.setLevel(logging.DEBUG)
-
 
 def warn_process(message: Message, bot: telebot) -> Message:
+    """
+    Warning user. User delete from chat member if get three warnings.
+    Automatically one warning lives one week.
+    :param message: Telegram API Message
+    :param bot: Telebot instance
+    :return response message from Telegram API server
+    """
     msg = message.text.split()
     if len(msg) > 1:
         reason = msg[1:]
@@ -24,7 +26,7 @@ def warn_process(message: Message, bot: telebot) -> Message:
                 warns_count += 1
                 Warns.create(
                     user=user,
-                    warn_number=warns_count + 1,
+                    warn_number=warns_count,
                     reason=reason,
                     datetime_add=datetime.datetime.now(),
                     till_date=till_date
@@ -39,7 +41,7 @@ def warn_process(message: Message, bot: telebot) -> Message:
                 print('here1', warns_count)
                 Warns.create(
                     user=user,
-                    warn_number=warns_count + 1,
+                    warn_number=warns_count,
                     reason=reason,
                     datetime_add=datetime.datetime.now(),
                     till_date=till_date
