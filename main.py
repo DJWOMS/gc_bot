@@ -10,12 +10,6 @@ from db.models import init_db
 from utils import admin_list
 # from scheduler import scheduler_init_unban_users
 
-# logger = telebot.logger
-# telebot.logger.setLevel(logging.DEBUG)
-# logger_peewee = logging.getLogger('peewee')
-# logger_peewee.addHandler(logging.StreamHandler())
-# logger_peewee.setLevel(logging.DEBUG)
-
 bot = telebot.TeleBot(BOT_TOKEN)
 # apihelper.proxy = {'https': 'socks5://{}'.format(PROXY)}
 

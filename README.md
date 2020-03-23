@@ -101,6 +101,25 @@ def test_process(message: Message, bot: telebot) -> Message:
 Информация о выполненной команде приходит от бота в частном сообщении пользователю, который инициировал ее.
 
 
+## Логирование 
+Можно подключить логирование в файле, в котором происходит необходимый для отслеживания запрос.
+
+- Логирование телеграм ответов
+
+logger = telebot.logger
+telebot.logger.setLevel(logging.DEBUG)
+
+- Логирование работы с базой данных
+
+logger_peewee = logging.getLogger('peewee')
+logger_peewee.addHandler(logging.StreamHandler())
+logger_peewee.setLevel(logging.DEBUG)
+
+- Логирование работы Scheduler
+
+logging.basicConfig()
+logging.getLogger('apscheduler').setLevel(logging.DEBUG)
+
 ## Создание бота и добавление его в чат телеграм
 
 1. Открывает @BotFather
