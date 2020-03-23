@@ -9,8 +9,8 @@ def unban_process(message: Message, bot: telebot) -> Message:
     """
     Delete user from user and blacklist tables.
     :param message: Telegram API Message
-    :param result: Selected function form commands dict
     :param bot: Telebot instance
+    :return response message from Telegram API server
     """
     user = User.delete().where(User.telegram_id == message.reply_to_message.from_user.id).execute()
     if user:

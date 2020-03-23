@@ -1,14 +1,14 @@
 import datetime
 import telebot
-from telebot import apihelper
+# from telebot import apihelper
 from telebot.types import Message
-import logging
+# import logging
 
 from credentials import BOT_TOKEN, PROXY
-from commands import init_light_command, init_sudo_command
+from commands import init_command
 from db.models import init_db
 from utils import admin_list
-from scheduler import scheduler_init
+# from scheduler import scheduler_init_unban_users
 
 # logger = telebot.logger
 # telebot.logger.setLevel(logging.DEBUG)
@@ -17,18 +17,19 @@ from scheduler import scheduler_init
 # logger_peewee.setLevel(logging.DEBUG)
 
 bot = telebot.TeleBot(BOT_TOKEN)
-apihelper.proxy = {'https': 'socks5://{}'.format(PROXY)}
+# apihelper.proxy = {'https': 'socks5://{}'.format(PROXY)}
 
 print('@@@ => INITIALIZE DATABASE <= @@@')
 init_db()
 print('@@@ => INITIALIZE SCHEDULER <= @@@')
-scheduler_init()
+# TODO Scheduler need to be refactoring
+# scheduler_init()
 print('@@@ => INITIALIZE BOT', bot.get_me(), '<= @@@')
 
 
 # INITIALIZE AVAILABLE COMMANDS
-light_commands = init_light_command('flood', 'share', 'tut', 'web', 'wq')
-sudo_commands = init_sudo_command('ban', 'unban', 'sudo', 'warn')
+light_commands = init_command('flood', 'share', 'tut', 'web', 'wq')
+sudo_commands = init_command('ban', 'unban', 'sudo', 'warn')
 
 
 @bot.message_handler(regexp='^![a-z]')

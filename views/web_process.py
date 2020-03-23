@@ -3,7 +3,11 @@ from telebot.types import Message
 
 
 def web_process(message: Message, bot: telebot) -> Message:
-    """Links to searching engine"""
+    """Links to searching engine.
+    :param message: Telegram API Message
+    :param bot: Telebot instance
+    :return response message from Telegram API server
+    """
     msg = """
     Похоже необходимо воспользоваться поиском:\n\n*+* https://google.com/\n*+* https://duckduckgo.com/
     """

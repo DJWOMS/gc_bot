@@ -3,7 +3,12 @@ from telebot.types import Message
 
 
 def share_process(message: Message, bot: telebot) -> Message:
-    """Links to share code web stages"""
+    """
+    Links to share code web stages.
+    :param message: Telegram API Message
+    :param bot: Telebot instance
+    :return response message from Telegram API server
+    """
     msg = """
     Для того, чтобы поделиться `кодом` или `ошибкой`, необходимо воспользоваться онлайн сервисами, такими как:\n
 *+* https://hastebin.com/\n*+* https://pastebin.com/\n*+* https://codeshare.io/

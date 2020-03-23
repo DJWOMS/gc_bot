@@ -3,7 +3,11 @@ from telebot.types import Message
 
 
 def wq_process(message: Message, bot: telebot) -> Message:
-    """Complete the question with details"""
+    """Complete the question with details.
+    :param message: Telegram API Message
+    :param bot: Telebot instance
+    :return response message from Telegram API server
+    """
     msg = """
     Для решения задачи недостаточно информации. Следует расширить вопрос, внеся в него детали проблемы
     """

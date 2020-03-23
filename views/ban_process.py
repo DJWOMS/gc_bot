@@ -12,7 +12,6 @@ def ban_process(message: Message, bot: telebot) -> Message:
     Creating User instance. Kicking user from chat and send group message about it.
     NOTE! mute_till.strftime('%s') not working on windows platform! Using timestamp() * 1000
     :param message: Current message data with user sender, chat_id and so on
-    :param result: Selected function from function dictionary.
     :param bot: Telebot instance
     :return Message: Telegram result api message
     """
@@ -24,9 +23,9 @@ def ban_process(message: Message, bot: telebot) -> Message:
         banned_user = prepare_user_data(user)
         till_date = dt.strftime('%Y-%m-%d %H:%M:%S')
         if text:
-            msg = f'*{user.username} заблокировал пользователя {banned_user} До:{till_date}\nПричина:*\n`{text}`'
+            msg = f'*@{user.username} заблокировал пользователя {banned_user} До:{till_date}\nПричина:*\n`{text}`'
         else:
-            msg = f'*{user.username} заблокировал пользователя {banned_user} До: {till_date}*'
+            msg = f'*@{user.username} заблокировал пользователя {banned_user} До: {till_date}*'
         if created:
             if msg[1] == 'kick':
                 # kick user from chat aka ban forever

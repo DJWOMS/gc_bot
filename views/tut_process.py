@@ -3,7 +3,12 @@ from telebot.types import Message
 
 
 def tut_process(message: Message, bot: telebot) -> Message:
-    """Links to Django tutorials resources"""
+    """
+    Links to Django tutorials resources.
+    :param message: Telegram API Message
+    :param bot: Telebot instance
+    :return response message from Telegram API server
+    """
     msg = """
     Полезные обучающие материалы для начала:\n\n*+* https://docs.djangoproject.com/en/3.0/
 *+* https://tutorial.djangogirls.org/ru/\n*+* https://developer.mozilla.org/ru/docs/Learn/Server-side/Django/
